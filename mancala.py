@@ -24,8 +24,6 @@ for cluster in table.clusters:
 
     for stone in cluster.stones:
         LAYERS[0].add(stone)
-
-mancala = Mancala(table)
          
 def main():
 
@@ -45,16 +43,19 @@ def main():
         for bg in BGS:
             WIN.blit(bg, (0,0))
 
-        current_player = mancala.get_current_player()
+        current_player = table.get_current_player()
         
         for cluster in table.clusters:
             if cluster.is_played:
+                cluster.is_played = False
                 cluster_id = cluster.get_id()
                 # print(cluster_id, "sdsss")
                 last_cluster = current_player.stream(cluster_id)
                 print("sd", last_cluster)
-                cluster.is_played = False
                 table.update_table()
+                table.update_turn()
+                table.show()
+                print(table.turn)
 
 
         for layer in LAYERS:

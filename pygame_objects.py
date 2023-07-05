@@ -1,5 +1,6 @@
 import pygame
 import random
+from player import Player
 from utils import lerp
 
 class UIObject(pygame.sprite.Sprite):
@@ -175,6 +176,10 @@ class Table():
         self.x, self.y = pivot_pos
         self.player_quantity = 2
         self.clusters = self.__construct_clusters()
+        p1 = Player( 0, [i for i in range(1, 7)])
+        p2 = Player( 7, [i for i in range(8, 14)])
+        self.players = [p1, p2]
+        self.turn = 0
 
     def __construct_clusters(self, n_clusters_pp=6, n_stones=4):
         clusters = []
@@ -222,50 +227,13 @@ class Table():
         for cluster in self.clusters:
             cluster.update_stones_position()
 
-class Player():
+    def is_enemy_cluster(self):
+        pass
 
-    def __init__(self, table: Table, store_id: int, cluster_ids: int):
-        self.store_id = store_id
-        self.cluster_ids = cluster_ids
-        self.table = table
-
-    def stream(self, cluster_id: int):
-        if cluster_id not in self.cluster_ids: return
-        return self.table.stream_cluster(cluster_id, self.store_id)
-
-class Mancala:
-    def __init__(self, table):
-        self.table = table
-        p1 = Player(self.table, 0, [i for i in range(1, 7)])
-        p2 = Player(self.table, 7, [i for i in range(8, 14)])
-        self.players = [p1, p2]
-        self.turn = 0
+    def update_turn(self):
+        self.turn += 1
+        if self.turn >= len(self.players): self.turn = 0
 
     def get_current_player(self) -> Player:
         return self.players[self.turn]
-
-    def main(self):
-
-        while True:
-
-            print(f"\nTURNO {self.turn}")
-
-            self.table.show()
-            curr_player = self.get_current_player()
-
-            while True:
-                cluster_id = int(input("Cluster to stream: "))
-                last_cluster = curr_player.stream(cluster_id)
-                if last_cluster is not None: break
-                print("Cluster invalido !!!!!!")
-            
-            # Regla de doble turnos
-            print(last_cluster)
-            print(curr_player.store_id)
-            if last_cluster.pos == curr_player.store_id:
-                print("Felicidades, otro turno!!!")
-                continue
-            
-            self.turn += 1
-            if self.turn >= len(self.players): self.turn = 0
 
