@@ -153,10 +153,6 @@ class Cluster(Button):
 
     def update_stones_position(self):
         stone_padding = 5
-        # for i, stone in enumerate(self.stones):
-        #     stone.x = self.x + (i - 1.5) * (stone.rect.width + stone_padding)
-        #     stone.y = self.y
-        # create them randomly within the cluster space
         for i, stone in enumerate(self.stones):
             stone.x = self.x + (i - 1.5) * (stone.rect.width + stone_padding) + (stone.rect.width + stone_padding) * (0.02 - random.random())
             stone.y = self.y + (stone.rect.height + stone_padding) * (0.2 - random.random())
@@ -218,6 +214,27 @@ class Table():
             #print(f"Appending stones to: {next_cluster}, idx: {idx}")
 
         return next_cluster
+    
+    def handle_stream_cluster(self, cluster_id):
+        print("STREAMING")
+        current_player= self.get_current_player()
+        if cluster_id not in current_player.cluster_ids: return
+        last_cluster =  self.stream_cluster(cluster_id, current_player.store_id)
+
+        self.update_table()
+        self.update_turn()
+        self.show()
+
+        return last_cluster
+        # current_player = self.get_current_player()
+        # last_cluster = self.stream_cluster(cluster_id, current_player.store_id)
+        # if last_cluster.is_store() and last_cluster.pos == current_player.store_id:
+        #     current_player.steal(last_cluster.stones)
+        # self.update_table()
+        # self.update_turn()
+        # self.show()
+        # print(self.turn)
+
     
     def show(self):
         for cluster in self.clusters:

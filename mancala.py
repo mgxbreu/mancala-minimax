@@ -49,13 +49,10 @@ def main():
             if cluster.is_played:
                 cluster.is_played = False
                 cluster_id = cluster.get_id()
-                # print(cluster_id, "sdsss")
-                last_cluster = current_player.stream(cluster_id)
+                last_cluster = table.handle_stream_cluster(cluster_id)
                 print("sd", last_cluster)
-                table.update_table()
-                table.update_turn()
-                table.show()
                 print(table.turn)
+                
 
 
         for layer in LAYERS:
