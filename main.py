@@ -2,7 +2,7 @@ from objects import *
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, table):
         self.table = Table()
         p1 = Player(self.table, 0, [i for i in range(1, 7)])
         p2 = Player(self.table, 7, [i for i in range(8, 14)])

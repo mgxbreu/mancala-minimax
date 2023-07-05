@@ -63,6 +63,11 @@ class Table():
                 offset -= 1
             else:
                 next_cluster.stones.append(cluster.stones.pop())
+                next_cluster.update(
+                        x=next_cluster.x + 10*(next_cluster.pos - cluster.pos),
+                        y=next_cluster.y + 10*(next_cluster.pos - cluster.pos)
+                        
+                )
                 print(f"Appending stones to: {next_cluster}, idx: {idx}")
             idx -= 1
 
